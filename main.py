@@ -5,7 +5,7 @@ import tkinter as tk
 
 game_start = False
 
-# ---------------------------------------------------------------------- #
+# --------------------------- Tkinter Window ------------------------------------------- #
 root = tk.Tk()
 root.geometry('500x500')
 root.title("Radio Button Example")
@@ -120,13 +120,8 @@ def color_cell(grid):
                 pg.draw.rect(screen, pg.Color('purple'), colored_cell)
 
 
-# starting_row, starting_col = [int(i) for i in input('Enter starting: ').split()]
-# ending_row, ending_col = [int(i) for i in input('Enter ending: ').split()]
-
 grid[starting_row][starting_col] = start_point
 grid[ending_row][ending_col] = target_point
-
-# mode = input('Enter the type of search between BFS and DFS (b/d): ')
 
 start = False
 
@@ -143,7 +138,7 @@ visited = []
 
 
 def f(arr, row, col, target, path, save: list[list[int]]):
-    # time.sleep(1000 / 1000)
+    time.sleep(30 / 1000)
     global start
 
     if arr[row][col] == target:
@@ -167,6 +162,7 @@ def f(arr, row, col, target, path, save: list[list[int]]):
             visited.append(right)
             arr[row][col] = 'V'
             f(arr, row, col + 1, target, path + [[row, col]], save)
+
             arr[row][col] = 'B'
 
         if row + 1 < len(arr) and arr[row + 1][col] != 'O' and down not in visited:
@@ -198,7 +194,7 @@ def bfs(arr):
     v: list[int] = []
 
     while len(q) != 0:
-        # time.sleep(20 / 1000)
+        time.sleep(20 / 1000)
         value: int = q.pop(0)
         x, y = value // columns, value % columns
 
@@ -234,7 +230,6 @@ def bfs(arr):
             q.append(left)
         if y + 1 < len(arr[x]) and right not in v and arr[x][y + 1] != 'O':
             q.append(right)
-        # arr[row][col] = 'D'
 
     draw_cell(grid)
     start = False
@@ -245,9 +240,7 @@ def dfs(arr):
     start_x, start_y = get_values(grid, start_point)
     save: list[list] = []
 
-    print('starting path finding...')
     f(arr, start_x, start_y, target_point, [], save)
-    print('done...')
 
     for path in save:
         print(path)
@@ -262,17 +255,12 @@ while running:
         if pg.mouse.get_pressed()[2]:
             x, y = pg.mouse.get_pos()
             grid[y // GRID_SIZE][x // GRID_SIZE] = set_point
-            print(y // GRID_SIZE, x // GRID_SIZE)
+            # print(y // GRID_SIZE, x // GRID_SIZE)
         if pg.mouse.get_pressed()[1]:
-            print('pressed')
             start = True
 
     if start:
         x = var.get()
-        # if mode == 'b':
-        #     bfs(grid)
-        # elif mode == 'd':
-        #     dfs(grid)
         if x == 'b':
             bfs(grid)
         elif x == 'd':
@@ -289,3 +277,4 @@ while running:
 
 pg.quit()
 sys.exit()
+
